@@ -1,21 +1,11 @@
-#include <bits/stdc++.h>
+#include "utils.h"
 using namespace std;
 
-class Timer {
-public:
-    void start(string name);
-    void display();
-
-private:
-    chrono::system_clock::time_point startTime;
-    chrono::system_clock::time_point curTime;
-    string name;
-};
-
-vector<int> readIntArray(istream& instream);
-void printArray(vector<int>& arr);
-
 void insertionSort(vector<int>& arr);
+
+void selectionSort(vector<int>& arr);
+
+void bubbleSort(vector<int>& arr);
 
 void mergeSort(vector<int>& arr, int start, int end);
 void merge(vector<int>& arr, int start, int mid, int end);
@@ -27,34 +17,10 @@ int main() {
     printArray(arr);
 
     t1.start("sort");
-    mergeSort(arr, 0, arr.size());
+    bubbleSort(arr);
     printArray(arr);
     t1.display();
     return 0;
-}
-
-void Timer::start(string name) {
-    this->name = name;
-    startTime = chrono::high_resolution_clock::now();
-};
-
-void Timer::display() {
-    curTime = chrono::high_resolution_clock::now();
-    chrono::duration<float> dur = curTime - startTime;
-    cout << name << " Completed in " << dur.count() << "s" << endl;
-};
-
-vector<int> readIntArray(istream& instream) {
-    int n;
-    instream >> n;
-    vector<int> temp(n);
-    for (int i = 0; i < n; i++) instream >> temp[i];
-    return temp;
-}
-
-void printArray(vector<int>& arr) {
-    for (int i = 0; i < arr.size(); i++) cout << arr[i] << ' ';
-    cout << endl;
 }
 
 void insertionSort(vector<int>& arr) {
@@ -63,6 +29,25 @@ void insertionSort(vector<int>& arr) {
         int j = i - 1;
         for (j; j >= 0 && arr[j] > key; j--) { arr[j + 1] = arr[j]; }
         arr[j + 1] = key;
+    }
+}
+
+void selectionSort(vector<int>& arr) {
+    for (int i = 0; i < arr.size() - 1; i++) {
+        int mnind = i;
+        for (int j = i; j < arr.size(); j++) {
+            if (arr[j] < arr[mnind]) mnind = j;
+        }
+        swap(arr[i], arr[mnind]);
+    }
+}
+
+void bubbleSort(vector<int>& arr) {
+    for (int i = 0; i < arr.size() - 1; i++) {
+        int key = arr[i];
+        for (int j = arr.size() - 1; j >= i + 1; j--) {
+            if (arr[j] < arr[j - 1]) swap(arr[j], arr[j - 1]);
+        }
     }
 }
 
