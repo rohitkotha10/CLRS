@@ -36,6 +36,7 @@ public:
 
     bool checkBST();
     void insertBST(T val);
+    void deleteBST(std::shared_ptr<Node<T>> val);
 
     std::shared_ptr<Node<T>> root;
     int size;
@@ -179,4 +180,74 @@ void Tree<T>::insertBST(T val) {
         y->right = z;
 
     size++;
+}
+
+template<typename T>
+void Tree<T>::deleteBST(std::shared_ptr<Node<T>> cur) {
+    int ans = 0;
+    if (cur->left != nullptr && cur->right != nullptr)
+        ans = 3;
+    else if (cur->left != nullptr)
+        ans = 1;
+    else if (cur->right != nullptr)
+        ans = 2;
+    if (ans == 0) {
+        std::shared_ptr<Node<T>> par = cur->parent;
+        if (par->right.get() == cur.get()) {
+            par->right = nullptr;
+        } else {
+            par->left = nullptr;
+        }
+        cur = nullptr;
+    } else if (ans == 1) {
+        std::shared_ptr<Node<T>> par = cur->parent;
+        cur->left->parent = par;
+        if (par->right.get() == cur.get()) {
+            par->right = cur->left;
+        } else {
+            par->left = cur->left;
+        }
+        cur = nullptr;
+    } else if (ans == 2) {
+        std::shared_ptr<Node<T>> par = cur->parent;
+        cur->right->parent = par;
+        if (par->right.get() == cur.get()) {
+            par->right = cur->right;
+        } else {
+            par->left = cur->right;
+        }
+        cur = nullptr;
+    } else if (ans == 3) {
+        std::shared_ptr<Node<T>> par = cur->parent;
+
+        std::shared_ptr<Node<T>> succ = successor(cur);
+        if (cur->right.get() == succ.get()) {
+            cur->right->parent = cur->parent;
+            if (par->right.get() == cur.get()) {
+                par->right = cur->right;
+            } else {
+                par->left = cur->right;
+            }
+            succ->left = cur->left;
+        } else {
+            std::shared_ptr<Node<T>> succpar = succ->parent;
+
+            succ->right->parent = succ->parent;
+            if (succpar->right.get() == succ.get()) {
+                succpar->right = succ->right;
+            } else {
+                succpar->left = succ->right;
+            }
+
+            succ->parent = cur->parent;
+            if (par->right.get() == cur.get()) {
+                par->right = succ;
+            } else {
+                par->left = succ;
+            }
+            succ->left = cur->left;
+        }
+        cur = nullptr;
+    }
+    size--;
 }

@@ -20,9 +20,9 @@ int main() {
     myTree.insertRight(myTree.search(myTree.root, 18), 19);
     myTree.insertRight(myTree.search(myTree.root, 15), 17);
 
-    int insertionVal;
-    cin >> insertionVal;
-    myTree.insertBST(insertionVal);
+    int delVal;
+    cin >> delVal;
+    myTree.deleteBST(myTree.search(myTree.root, delVal));
 
     myTree.inorderTraversal(myTree.root);
     cout << endl;
