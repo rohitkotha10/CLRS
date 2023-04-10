@@ -10,18 +10,19 @@ int main() {
 
     t1.start("tree");
 
-    Tree<int> myTree(15);
+    Tree<int> myTree(12);
 
-    myTree.insertLeft(myTree.search(myTree.root, 15), 6);
-    myTree.insertRight(myTree.search(myTree.root, 15), 18);
-    myTree.insertLeft(myTree.search(myTree.root, 6), 3);
-    myTree.insertRight(myTree.search(myTree.root, 6), 7);
-    myTree.insertLeft(myTree.search(myTree.root, 18), 17);
-    myTree.insertRight(myTree.search(myTree.root, 18), 20);
-    myTree.insertLeft(myTree.search(myTree.root, 3), 2);
-    myTree.insertRight(myTree.search(myTree.root, 3), 4);
-    myTree.insertRight(myTree.search(myTree.root, 7), 13);
-    myTree.insertLeft(myTree.search(myTree.root, 13), 9);
+    myTree.insertLeft(myTree.search(myTree.root, 12), 5);
+    myTree.insertRight(myTree.search(myTree.root, 12), 18);
+    myTree.insertLeft(myTree.search(myTree.root, 5), 2);
+    myTree.insertRight(myTree.search(myTree.root, 5), 9);
+    myTree.insertLeft(myTree.search(myTree.root, 18), 15);
+    myTree.insertRight(myTree.search(myTree.root, 18), 19);
+    myTree.insertRight(myTree.search(myTree.root, 15), 17);
+
+    int insertionVal;
+    cin >> insertionVal;
+    myTree.insertBST(insertionVal);
 
     myTree.inorderTraversal(myTree.root);
     cout << endl;
@@ -42,8 +43,8 @@ int main() {
         if (cur->left != nullptr) cout << "Left " << cur->left->val << ' ';
         if (cur->right != nullptr) cout << "Right " << cur->right->val << ' ';
         cout << endl;
-        cout << "Successor " << myTree.successor(cur)->val << endl;
-        cout << "Predecessor " << myTree.predecessor(cur)->val << endl;
+        if (myTree.successor(cur) != nullptr) cout << "Successor " << myTree.successor(cur)->val << endl;
+        if (myTree.predecessor(cur) != nullptr) cout << "Predecessor " << myTree.predecessor(cur)->val << endl;
     } else
         cout << "Not Found" << endl;
 

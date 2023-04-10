@@ -34,6 +34,9 @@ public:
     std::shared_ptr<Node<T>> successor(std::shared_ptr<Node<T>> cur);
     std::shared_ptr<Node<T>> predecessor(std::shared_ptr<Node<T>> cur);
 
+    bool checkBST();
+    void insertBST(T val);
+
     std::shared_ptr<Node<T>> root;
     int size;
 };
@@ -147,4 +150,33 @@ std::shared_ptr<Node<T>> Tree<T>::predecessor(std::shared_ptr<Node<T>> cur) {
         y = y->parent;
     }
     return y;
+}
+
+template<typename T>
+bool Tree<T>::checkBST() {
+    return true;
+}
+
+template<typename T>
+void Tree<T>::insertBST(T val) {
+    std::shared_ptr<Node<T>> y = nullptr;
+    std::shared_ptr<Node<T>> x = root;
+
+    std::shared_ptr<Node<T>> z = std::make_shared<Node<T>>(val);
+    while (x != nullptr) {
+        y = x;
+        if (z->val < x->val)
+            x = x->left;
+        else
+            x = x->right;
+        z->parent = y;
+    }
+    if (y == nullptr)
+        root = z;
+    else if (z->val < y->val)
+        y->left = z;
+    else
+        y->right = z;
+
+    size++;
 }
