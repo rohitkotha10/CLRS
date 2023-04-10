@@ -30,7 +30,7 @@ int main() {
     myTree.postorderTraversal(myTree.root);
     cout << endl;
 
-    cout << myTree.minimumTree(myTree.root) << ' ' << myTree.maximumTree(myTree.root);
+    cout << myTree.minimumTree(myTree.root)->val << ' ' << myTree.maximumTree(myTree.root)->val;
     cout << endl;
 
     int val;
@@ -42,6 +42,8 @@ int main() {
         if (cur->left != nullptr) cout << "Left " << cur->left->val << ' ';
         if (cur->right != nullptr) cout << "Right " << cur->right->val << ' ';
         cout << endl;
+        cout << "Successor " << myTree.successor(cur)->val << endl;
+        cout << "Predecessor " << myTree.predecessor(cur)->val << endl;
     } else
         cout << "Not Found" << endl;
 

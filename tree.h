@@ -16,6 +16,8 @@ template<typename T>
 class Tree {
 public:
     Tree(T rootVal);
+    // n x 4 table with key, parent, left, right
+    Tree(std::vector<std::vector<T>>& table);
 
     void inorderTraversal(std::shared_ptr<Node<T>> cur);
     void preorderTraversal(std::shared_ptr<Node<T>> cur);
@@ -25,6 +27,12 @@ public:
     void insertRight(std::shared_ptr<Node<T>> cur, T val);
 
     std::shared_ptr<Node<T>> search(std::shared_ptr<Node<T>> cur, T val);
+
+    std::shared_ptr<Node<T>> minimumTree(std::shared_ptr<Node<T>> cur);  // provided is bst
+    std::shared_ptr<Node<T>> maximumTree(std::shared_ptr<Node<T>> cur);  // provided is bst
+
+    std::shared_ptr<Node<T>> successor(std::shared_ptr<Node<T>> cur);
+    std::shared_ptr<Node<T>> predecessor(std::shared_ptr<Node<T>> cur);
 
     std::shared_ptr<Node<T>> root;
     int size;
@@ -39,6 +47,11 @@ template<typename T>
 Tree<T>::Tree(T rootVal) {
     root = std::make_shared<Node<T>>(rootVal);
     size = 1;
+}
+
+template<typename T>
+Tree<T>::Tree(std::vector<std::vector<T>>& table) {
+    root = std::make_shared<Node<T>>(table[0][0]);
 }
 
 template<typename T>
@@ -94,4 +107,44 @@ std::shared_ptr<Node<T>> Tree<T>::search(std::shared_ptr<Node<T>> cur, T val) {
         return search(cur->right, val);
     else
         return nullptr;
+}
+
+template<typename T>
+std::shared_ptr<Node<T>> Tree<T>::minimumTree(std::shared_ptr<Node<T>> cur) {
+    if (cur->left != nullptr) return minimumTree(cur->left);
+    return cur;
+}
+
+template<typename T>
+std::shared_ptr<Node<T>> Tree<T>::maximumTree(std::shared_ptr<Node<T>> cur) {
+    if (cur->right != nullptr) return maximumTree(cur->right);
+    return cur;
+}
+
+template<typename T>
+std::shared_ptr<Node<T>> Tree<T>::successor(std::shared_ptr<Node<T>> cur) {
+    if (cur->right != nullptr) return minimumTree(cur->right);
+
+    if (cur->parent == nullptr) return nullptr;
+    std::shared_ptr<Node<T>> y = cur->parent;
+    while (cur.get() == y->right.get()) {
+        cur = y;
+        if (y->parent == nullptr) return nullptr;
+        y = y->parent;
+    }
+    return y;
+}
+
+template<typename T>
+std::shared_ptr<Node<T>> Tree<T>::predecessor(std::shared_ptr<Node<T>> cur) {
+    if (cur->left != nullptr) return maximumTree(cur->left);
+
+    if (cur->parent == nullptr) return nullptr;
+    std::shared_ptr<Node<T>> y = cur->parent;
+    while (cur.get() == y->left.get()) {
+        cur = y;
+        if (y->parent == nullptr) return nullptr;
+        y = y->parent;
+    }
+    return y;
 }
