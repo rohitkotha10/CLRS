@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "heap.h"
 using namespace std;
 
 void insertionSort(vector<int>& arr);
@@ -10,6 +11,8 @@ void bubbleSort(vector<int>& arr);
 void mergeSort(vector<int>& arr, int start, int end);
 void merge(vector<int>& arr, int start, int mid, int end);
 
+void heapSort(vector<int>& arr);
+
 int main() {
     Timer t1;
 
@@ -17,7 +20,9 @@ int main() {
     printArray(arr);
 
     t1.start("sort");
-    bubbleSort(arr);
+
+    heapSort(arr);
+
     printArray(arr);
     t1.display();
     return 0;
@@ -81,4 +86,20 @@ void merge(vector<int>& arr, int start, int mid, int end) {
         for (int i = sec; i < end; i++) temp.push_back(arr[i]);
     }
     for (int i = start; i < end; i++) arr[i] = temp[i - start];
+}
+
+void heapSort(vector<int>& arr) {
+    Heap<int> myHeap(arr);
+    vector<int> ans;
+    myHeap.buildMaxHeap();
+    for (int i = myHeap.size() - 1; i >= 1; i--) {
+        swap(myHeap.arr[0], myHeap.arr[i]);
+        ans.push_back(myHeap.arr.back());
+        myHeap.arr.pop_back();
+        myHeap.maxHeapify(0);
+    }
+    ans.push_back(myHeap.arr.back());
+    myHeap.arr.pop_back();
+    reverse(ans.begin(), ans.end());
+    arr = ans;
 }
